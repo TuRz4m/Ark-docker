@@ -25,7 +25,7 @@ ENV AUTOBACKUP -1
 
 # Install dependencies 
 RUN apt-get update &&\ 
-    apt-get install -y curl lib32gcc1 git 
+    apt-get install -y curl lib32gcc1 lsof git 
 
 
 # Run commands as the steam user
