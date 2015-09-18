@@ -21,7 +21,12 @@ ENV BACKUPONSTART 1
 ENV AUTOUPDATE -1
 # Nb minute between auto backup (-1 : no auto backup)
 ENV AUTOBACKUP -1
-
+#  branch on github for ark server tools
+ENV BRANCH master
+# Server PORT (you can't remap with docker, it doesn't work)
+ENV SERVERPORT 27015
+# Steam port (you can't remap with docker, it doesn't work)
+ENV STEAMPORT 7778
 
 # Install dependencies 
 RUN apt-get update &&\ 
@@ -37,21 +42,21 @@ RUN adduser \
 
 # Copy & rights to folders
 COPY run.sh /home/steam/run.sh
-COPY arkmanager.cfg /home/steam/arkmanager.cfg
+COPY arkmanager-user.cfg /home/steam/arkmanager.cfg
 
 RUN chmod 777 /home/steam/run.sh
 RUN mkdir  /ark
 
 
 # We use the git method, because api github has a limit ;)
-RUN  git clone https://github.com/FezVrasta/ark-server-tools.git /home/steam/ark-server-tools
+RUN  git clone -b $BRANCH https://github.com/FezVrasta/ark-server-tools.git /home/steam/ark-server-tools
 # Install 
 WORKDIR /home/steam/ark-server-tools/tools
 RUN chmod +x install.sh 
 RUN ./install.sh steam 
 
 # Define default config file in /ark
-RUN echo 'source /ark/arkmanager.cfg' > /etc/arkmanager/arkmanager.cfg
+COPY arkmanager-system.cfg /etc/arkmanager/arkmanager.cfg
 
 
 RUN chown steam -R /ark && chmod 755 -R /ark
@@ -71,7 +76,7 @@ RUN /home/steam/steamcmd/steamcmd.sh +login anonymous +quit
 
 
 
-EXPOSE 7778 27016 32330
+EXPOSE ${STEAMPORT} 32330 ${SERVERPORT}
 
 VOLUME  /ark 
 
