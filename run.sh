@@ -11,9 +11,10 @@ export TERM=linux
 [ ! -d /ark/log ] && mkdir /ark/log
 [ ! -d /ark/backup ] && mkdir /ark/backup
 
-
-echo "Upgrade Ark server tools..."
-arkmanager upgrade
+# Remove auto-upgrade since we need priviled access
+# With 1.4, we will use the user install and allow auto upgrade
+#echo "Upgrade Ark server tools..."
+#arkmanager upgrade
 
 
 if [ ! -d "/ark/server" ];then 
