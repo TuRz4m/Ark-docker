@@ -1,8 +1,8 @@
-# Ark Survived Evolved - Docker
+# ARK: Survival Evolved - Docker
 
-Docker build for managing an Ark Survived Evolved server.
+Docker build for managing an ARK: Survival Evolved server.
 
-This image uses [Ark Server Tools] (https://github.com/FezVrasta/ark-server-tools) to manage an ark server.
+This image uses [Ark Server Tools](https://github.com/FezVrasta/ark-server-tools) to manage an ark server.
 
 ## Usage
 Fast & Easy server setup :   
@@ -94,7 +94,6 @@ Number of minute to warn the players when auto-update (default : 30)
 ---
 
 ## Roadmap
-+ direct UDP socket connections rather than Steam P2P (new version v213) ?
 + Better mods handling (wait for ark server tools (branch: 1.4-dev))
 
 ---
