@@ -12,7 +12,7 @@ export TERM=linux
 [ ! -d /ark/backup ] && mkdir /ark/backup
 
 #echo "Upgrade Ark server tools..."
-arkmanager upgrade-tools
+#arkmanager upgrade-tools
 
 
 if [ ! -d "/ark/server"  ] && [ ! -f "/ark/server/arkversion" ];then 
