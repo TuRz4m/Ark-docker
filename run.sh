@@ -11,25 +11,26 @@ export TERM=linux
 [ ! -d /ark/log ] && mkdir /ark/log
 [ ! -d /ark/backup ] && mkdir /ark/backup
 
-# Remove auto-upgrade since we need priviled access
-# With 1.4, we will use the user install and allow auto upgrade
 #echo "Upgrade Ark server tools..."
-#arkmanager upgrade
+arkmanager upgrade-tools
 
 
-if [ ! -d "/ark/server" ];then 
+if [ ! -d "/ark/server"  ] && [ ! -f "/ark/server/arkversion" ];then 
 	echo "Install ark..."
 	arkmanager install
-fi
+	# Create mod dir
+	mkdir /ark/server/ShooterGame/Content/Mods
+else
 
-if [ ${BACKUPONSTART} -eq 1 ]; then 
-	echo "[Backup]"
-	arkmanager backup
-fi
+	if [ ${BACKUPONSTART} -eq 1 ]; then 
+		echo "[Backup]"
+		arkmanager backup
+	fi
 
-if [ ${UPDATEONSTART} -eq 1 ]; then 
-	echo "[Update]"
-	arkmanager update
+	if [ ${UPDATEONSTART} -eq 1 ]; then 
+		echo "[Update]"
+		arkmanager update --update-mods
+	fi
 fi
 
 # Launching ark server
@@ -43,7 +44,7 @@ trap 'arkmanager stop' TERM
 
 # Auto update every $AUTOUPDATE minutes
 if [ $AUTOUPDATE -gt 0 ]; then
-	while :; do sleep $(($AUTOUPDATE * 60)); echo "[`date +'%y/%m/%d %H:%M'`] [Auto-Update]"; arkmanager update --warn ; done &
+	while :; do sleep $(($AUTOUPDATE * 60)); echo "[`date +'%y/%m/%d %H:%M'`] [Auto-Update]"; arkmanager update --warn --update-mods --backup ; done &
 fi
 
 # Auto backup every $AUTOBACKUP minutes

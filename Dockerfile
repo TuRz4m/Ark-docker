@@ -22,7 +22,7 @@ ENV AUTOUPDATE -1
 # Nb minute between auto backup (-1 : no auto backup)
 ENV AUTOBACKUP -1
 #  branch on github for ark server tools
-ENV BRANCH master
+ENV BRANCH 1.4-dev
 # Server PORT (you can't remap with docker, it doesn't work)
 ENV SERVERPORT 27015
 # Steam port (you can't remap with docker, it doesn't work)
@@ -32,6 +32,10 @@ ENV STEAMPORT 7778
 RUN apt-get update &&\ 
     apt-get install -y curl lib32gcc1 lsof git 
 
+# Enable passwordless sudo for users under the "sudo" group
+RUN sed -i.bkp -e \
+	's/%sudo\s\+ALL=(ALL\(:ALL\)\?)\s\+ALL/%sudo ALL=NOPASSWD:ALL/g' /etc/sudoers \
+	/etc/sudoers
 
 # Run commands as the steam user
 RUN adduser \ 
@@ -39,6 +43,8 @@ RUN adduser \
 	--shell /bin/bash \ 
 	--gecos "" \ 
 	steam
+# Add to sudo group
+RUN usermod -a -G sudo steam
 
 # Copy & rights to folders
 COPY run.sh /home/steam/run.sh
