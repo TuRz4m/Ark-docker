@@ -12,6 +12,7 @@ This version use the 1.4-dev branch on Ark server Tools allowing mods handling.
  - Auto update (on start or on timer)
  - Auto backup (on start or on timer)
  - Mods handling (via Ark Server Tools)
+ - `Docker stop` is a clean stop 
 
 ## Usage
 Fast & Easy server setup :   
