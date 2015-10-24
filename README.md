@@ -111,3 +111,5 @@ Number of minute to warn the players when auto-update (default : 30)
 ---
 
 ## Known issues
+- Auto update is broken : server don't restart correctly
+- Ark Server Tools download the mods every update command without checking if it's necessary.
