@@ -33,6 +33,22 @@ else
 	fi
 fi
 
+# We load the crontab file if it exist.
+if [ -f /ark/crontab ]; then
+	crontab /ark/crontab
+else
+	cat <<EOT >> /ark/crontab
+# Minute   Hour   Day of Month       Month          Day of Week        Command
+# (0-59)  (0-23)     (1-31)    (1-12 or Jan-Dec)  (0-6 or Sun-Sat)
+# Example : update every hour
+# 0 * * * * arkmanager update
+# Example : backup every 15min
+# */15 * * * * arkmanager backup
+# Example : backup every day at midnight
+# 0 0 * * * arkmanager backup
+	EOT
+fi
+
 # Launching ark server
 arkmanager start
 
