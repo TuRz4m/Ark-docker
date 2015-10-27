@@ -38,8 +38,14 @@ if [ -f /ark/crontab ]; then
 	crontab /ark/crontab
 else
 	cat <<EOT >> /ark/crontab
-# Minute   Hour   Day of Month       Month          Day of Week        Command
-# (0-59)  (0-23)     (1-31)    (1-12 or Jan-Dec)  (0-6 or Sun-Sat)
+# Example of job definition: 
+# .---------------- minute (0 - 59) 
+# |  .------------- hour (0 - 23) 
+# |  |  .---------- day of month (1 - 31) 
+# |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ... 
+# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat 
+# |  |  |  |  | 
+# *  *  *  *  *  user command to be executed 
 # Example : update every hour
 # 0 * * * * arkmanager update
 # Example : backup every 15min
