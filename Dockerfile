@@ -17,10 +17,6 @@ ENV NBPLAYERS 70
 ENV UPDATEONSTART 1
 # if the server is backup when start with docker start
 ENV BACKUPONSTART 1
-# Nb minute between auto update (warm) (-1 : no auto update)
-ENV AUTOUPDATE -1
-# Nb minute between auto backup (-1 : no auto backup)
-ENV AUTOBACKUP -1
 #  branch on github for ark server tools
 ENV BRANCH master
 # Server PORT (you can't remap with docker, it doesn't work)
