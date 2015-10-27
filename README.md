@@ -4,7 +4,8 @@ Docker build for managing an ARK: Survival Evolved server.
 
 This image uses [Ark Server Tools](https://github.com/FezVrasta/ark-server-tools) to manage an ark server.
 
-This version use the 1.4-dev branch on Ark server Tools allowing mods handling. Instead of turzam/ark, use : turzam/ark:dev-1.4
+*If you use an old volume, delete arkmanager.cfg to get the new configuration file.*  
+
 
 ## Features
  - Easy install (no steamcmd / lib32... to install)
@@ -111,5 +112,3 @@ Number of minute to warn the players when auto-update (default : 30)
 ---
 
 ## Known issues
-- Auto update is broken : server don't restart correctly
-- Ark Server Tools download the mods every update command without checking if it's necessary.
