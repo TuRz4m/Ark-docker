@@ -112,3 +112,14 @@ Number of minute to warn the players when auto-update (default : 30)
 ---
 
 ## Known issues
+
+---
+
+## Changelog
++ 1.0 : 
+  - Initial image : works with Ark Server tools 1.3
+  - Add auto-update & auto-backup  
++ 2.0 :  
+  - Works with Ark Server Tools 1.4 [See changelog here](https://github.com/FezVrasta/ark-server-tools/releases/tag/v1.4)
+  - Handle mods && auto update mods
+
