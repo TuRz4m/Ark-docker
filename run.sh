@@ -36,6 +36,8 @@ fi
 # We load the crontab file if it exist.
 if [ -f /ark/crontab ]; then
 	crontab /ark/crontab
+	# Cron is attached to this process
+	sudo cron -f &
 else
 	cat <<EOT >> /ark/crontab
 # Example of job definition: 
@@ -52,6 +54,8 @@ else
 # */15 * * * * arkmanager backup
 # Example : backup every day at midnight
 # 0 0 * * * arkmanager backup
+# WARNING : the container timezone is maybe not your current timezone
+#           You can sync them with option -v /etc/localtime:/etc/localtime:ro or -e "TZ=UTC"
 EOT
 fi
 
@@ -61,7 +65,7 @@ arkmanager start
 
 # Stop server in case of signal INT or TERM
 echo "Waiting..."
-trap 'arkmanager stop' INT
+trap 'arkmanager stop;' INT
 trap 'arkmanager stop' TERM
 
 read < /tmp/FIFO &
