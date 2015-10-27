@@ -7,6 +7,11 @@ mkfifo /tmp/FIFO
 
 export TERM=linux
 
+if [ ! -w /ark ]; then 
+	echo "[Error] Can't access ark directory. Check permissions on your mapped directory with /ark"
+	exit 1
+fi
+
 # Creating directory tree && symbolic link
 [ ! -f /ark/arkmanager.cfg ] && cp /home/steam/arkmanager.cfg /ark/arkmanager.cfg
 [ ! -d /ark/log ] && mkdir /ark/log
