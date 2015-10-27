@@ -46,7 +46,7 @@ else
 # */15 * * * * arkmanager backup
 # Example : backup every day at midnight
 # 0 0 * * * arkmanager backup
-	EOT
+EOT
 fi
 
 # Launching ark server
