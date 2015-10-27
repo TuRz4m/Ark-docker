@@ -5,6 +5,7 @@ Docker build for managing an ARK: Survival Evolved server.
 This image uses [Ark Server Tools](https://github.com/FezVrasta/ark-server-tools) to manage an ark server.
 
 *If you use an old volume, delete arkmanager.cfg to get the new configuration file.*  
+__Don't forger to use `docker pull turzam/ark` to get the latest version of the image__
 
 
 ## Features
