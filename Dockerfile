@@ -22,7 +22,7 @@ ENV AUTOUPDATE -1
 # Nb minute between auto backup (-1 : no auto backup)
 ENV AUTOBACKUP -1
 #  branch on github for ark server tools
-ENV BRANCH 1.4-dev
+ENV BRANCH master
 # Server PORT (you can't remap with docker, it doesn't work)
 ENV SERVERPORT 27015
 # Steam port (you can't remap with docker, it doesn't work)
