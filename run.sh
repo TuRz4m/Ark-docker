@@ -17,7 +17,7 @@ fi
 [ ! -d /ark/log ] && mkdir /ark/log
 [ ! -d /ark/backup ] && mkdir /ark/backup
 [ ! -f /ark/Game.ini ] && ln -s /ark/server/ShooterGame/Saved/Config/Game.ini /ark/Game.ini
-[ ! -f /ark/GameUserSetting.ini ] && ln -s /ark/server/ShooterGame/Saved/Config/GameUserSetting.ini /ark/GameUserSetting.ini
+[ ! -f /ark/GameUserSettings.ini ] && ln -s /ark/server/ShooterGame/Saved/Config/GameUserSetting.ini /ark/GameUserSettings.ini
 
 
 
