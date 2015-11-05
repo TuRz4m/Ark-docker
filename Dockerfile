@@ -1,4 +1,4 @@
-FROM ubuntu:14.04
+FROM debian:8
 
 MAINTAINER TuRzAm
 
@@ -26,7 +26,7 @@ ENV STEAMPORT 7778
 
 # Install dependencies 
 RUN apt-get update &&\ 
-    apt-get install -y curl lib32gcc1 lsof git 
+    apt-get install -y curl lib32gcc1 lsof git sudo cron 
 
 # Enable passwordless sudo for users under the "sudo" group
 RUN sed -i.bkp -e \
@@ -63,10 +63,7 @@ RUN ln -s /usr/local/bin/arkmanager /usr/bin/arkmanager
 # Define default config file in /ark
 COPY arkmanager-system.cfg /etc/arkmanager/arkmanager.cfg
 
-
 RUN chown steam -R /ark && chmod 755 -R /ark
-
-
 
 USER steam 
 
@@ -78,8 +75,6 @@ RUN mkdir /home/steam/steamcmd &&\
 
 # First run is on anonymous to download the app
 RUN /home/steam/steamcmd/steamcmd.sh +login anonymous +quit
-
-
 
 EXPOSE ${STEAMPORT} 32330 ${SERVERPORT}
 
