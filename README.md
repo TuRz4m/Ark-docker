@@ -93,9 +93,9 @@ Steam server port (can't rebind with docker, it doesn't work) (default : 7778)
 + __BACKUPONSTART__
 1 : Backup the server when the container is started. 0: no backup (default : 1)
 + __UPDATEPONSTART__
-1 : Update the server when the container is started. 0: no update (default : 1)
-+ __WARNMINUTE__
-Number of minute to warn the players when auto-update (default : 30)
+1 : Update the server when the container is started. 0: no update (default : 1)  
++ __TZ__
+Time Zone : Set the container timezone (for crontab). 
 
 
 --- 
@@ -131,7 +131,8 @@ Number of minute to warn the players when auto-update (default : 30)
   - Works with Ark Server Tools 1.4 [See changelog here](https://github.com/FezVrasta/ark-server-tools/releases/tag/v1.4)
   - Handle mods && auto update mods
 + 1.2 :
-  - Remove variable AUTOBACKUP & AUTOUPDATE
+  - Remove variable AUTOBACKUP & AUTOUPDATE 
+  - Remove variable WARNMINUTE (can now be find in arkmanager.cfg)
   - Add crontab support
   - You can now config crontab with the file /your/ark/path/crontab
 
