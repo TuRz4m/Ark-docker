@@ -12,16 +12,20 @@ if [ ! -w /ark ]; then
 	exit 1
 fi
 
+# Change working directory to /ark to allow relative path
+cd /ark
+
 # Add a template directory to store the last version of config file
 [ ! -d /ark/template ] && mkdir /ark/template
-[ -f /ark/arkmanager.cfg ] && cp /home/steam/arkmanager.cfg /ark/template/arkmanager.cfg
-[ -f /ark/crontab ] && cp /home/steam/crontab /ark/template/crontab
+# We overwrite the template file each time
+cp /home/steam/arkmanager.cfg /ark/template/arkmanager.cfg
+cp /home/steam/crontab /ark/template/crontab
 # Creating directory tree && symbolic link
 [ ! -f /ark/arkmanager.cfg ] && cp /home/steam/arkmanager.cfg /ark/arkmanager.cfg
 [ ! -d /ark/log ] && mkdir /ark/log
 [ ! -d /ark/backup ] && mkdir /ark/backup
-[ ! -f /ark/Game.ini ] && ln -s /ark/server/ShooterGame/Saved/Config/LinuxServer/Game.ini /ark/Game.ini
-[ ! -f /ark/GameUserSettings.ini ] && ln -s /ark/server/ShooterGame/Saved/Config/LinuxServer/GameUserSettings.ini /ark/GameUserSettings.ini
+[ ! -f /ark/Game.ini ] && ln -s server/ShooterGame/Saved/Config/LinuxServer/Game.ini Game.ini
+[ ! -f /ark/GameUserSettings.ini ] && ln -s server/ShooterGame/Saved/Config/LinuxServer/GameUserSettings.ini GameUserSettings.ini
 
 
 

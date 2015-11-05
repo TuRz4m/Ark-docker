@@ -81,5 +81,8 @@ EXPOSE ${STEAMPORT} 32330 ${SERVERPORT}
 
 VOLUME  /ark 
 
+# Change the working directory to /arkd
+WORKDIR /ark
+
 # Update game launch the game.
 ENTRYPOINT ["/home/steam/run.sh"]
