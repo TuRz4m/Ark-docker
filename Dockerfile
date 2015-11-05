@@ -44,6 +44,7 @@ RUN usermod -a -G sudo steam
 
 # Copy & rights to folders
 COPY run.sh /home/steam/run.sh
+COPY crontab /home/steam/crontab
 COPY arkmanager-user.cfg /home/steam/arkmanager.cfg
 
 RUN chmod 777 /home/steam/run.sh

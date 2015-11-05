@@ -12,12 +12,16 @@ if [ ! -w /ark ]; then
 	exit 1
 fi
 
+# Add a template directory to store the last version of config file
+[ ! -d /ark/template ] && mkdir /ark/template
+[ -f /ark/arkmanager.cfg ] && cp /home/steam/arkmanager.cfg /ark/template/arkmanager.cfg
+[ -f /ark/crontab ] && cp /home/steam/crontab /ark/template/crontab
 # Creating directory tree && symbolic link
 [ ! -f /ark/arkmanager.cfg ] && cp /home/steam/arkmanager.cfg /ark/arkmanager.cfg
 [ ! -d /ark/log ] && mkdir /ark/log
 [ ! -d /ark/backup ] && mkdir /ark/backup
-[ ! -f /ark/Game.ini ] && ln -s /ark/server/ShooterGame/Saved/Config/Game.ini /ark/Game.ini
-[ ! -f /ark/GameUserSettings.ini ] && ln -s /ark/server/ShooterGame/Saved/Config/GameUserSetting.ini /ark/GameUserSettings.ini
+[ ! -f /ark/Game.ini ] && ln -s /ark/server/ShooterGame/Saved/Config/LinuxServer/Game.ini /ark/Game.ini
+[ ! -f /ark/GameUserSettings.ini ] && ln -s /ark/server/ShooterGame/Saved/Config/LinuxServer/GameUserSettings.ini /ark/GameUserSettings.ini
 
 
 
@@ -38,30 +42,16 @@ else
 	fi
 fi
 
-# We load the crontab file if it exist.
-if [ -f /ark/crontab ]; then
+# If there is uncommented line in the file
+CRONNUMBER=`grep -v "^#" /ark/crontab | wc -l`
+if [ $CRONNUMBER -gt 0 ]; then
+	echo "Loading crontab..."
+	# We load the crontab file if it exist.
 	crontab /ark/crontab
 	# Cron is attached to this process
 	sudo cron -f &
 else
-	cat <<EOT >> /ark/crontab
-# Example of job definition: 
-# .---------------- minute (0 - 59) 
-# |  .------------- hour (0 - 23) 
-# |  |  .---------- day of month (1 - 31) 
-# |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ... 
-# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat 
-# |  |  |  |  | 
-# *  *  *  *  *  user command to be executed 
-# Example : update every hour
-# 0 * * * * arkmanager update
-# Example : backup every 15min
-# */15 * * * * arkmanager backup
-# Example : backup every day at midnight
-# 0 0 * * * arkmanager backup
-# WARNING : the container timezone is maybe not your current timezone
-#           You can sync them with option -v /etc/localtime:/etc/localtime:ro or -e "TZ=UTC"
-EOT
+	echo "No crontab set."
 fi
 
 # Launching ark server

@@ -1,0 +1,16 @@
+# Example of job definition: 
+# .---------------- minute (0 - 59) 
+# |  .------------- hour (0 - 23) 
+# |  |  .---------- day of month (1 - 31) 
+# |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ... 
+# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat 
+# |  |  |  |  | 
+# *  *  *  *  *  user command to be executed 
+# Example : update every hour
+# 0 * * * * arkmanager update
+# Example : backup every 15min
+# */15 * * * * arkmanager backup
+# Example : backup every day at midnight
+# 0 0 * * * arkmanager backup
+# WARNING : the container timezone is maybe not your current timezone
+#           You can sync them with option -v /etc/localtime:/etc/localtime:ro or -e "TZ=UTC"
