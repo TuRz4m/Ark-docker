@@ -10,7 +10,7 @@ __Don't forget to use `docker pull turzam/ark` to get the latest version of the 
 
 ## Features
  - Easy install (no steamcmd / lib32... to install)
- - Use Ark Server Tools : update/install/start/backup/rcon
+ - Use Ark Server Tools : update/install/start/backup/rcon/mods
  - Easy crontab configuration
  - Easy access to ark config file
  - Mods handling (via Ark Server Tools)
@@ -22,7 +22,7 @@ Fast & Easy server setup :
 
 You can map the ark volume to access config files :  
 `docker run -d -p 7778:7778 -p 7778:7778/udp -p 27015:27015 -p 27015:27015/udp -e SESSIONNAME=myserver -v /my/path/to/ark:/ark --name ark turzam/ark`  
-Then you can edit */my/path/to/ark/arkcmanager.cfg* (the values override GameUserSetting.ini) and */my/path/to/ark/[GameUserSetting.ini/Game.ini]*
+Then you can edit */my/path/to/ark/arkmanager.cfg* (the values override GameUserSetting.ini) and */my/path/to/ark/[GameUserSetting.ini/Game.ini]*
 
 You can manager your server with rcon if you map the rcon port (you can rebind the rcon port with docker):  
 `docker run -d -p 7778:7778 -p 7778:7778/udp -p 27015:27015 -p 27015:27015/udp -p 32330:32330  -e SESSIONNAME=myserver --name ark turzam/ark`  
@@ -33,6 +33,9 @@ You can change server and steam port to allow multiple servers on same host:
 
 You can check your server with :  
 `docker exec ark arkmanager status` 
+
+You can manually update your mods:  
+`docker exec ark arkmanager update --update-mods` 
 
 You can manually update your server:  
 `docker exec ark arkmanager update --force` 
@@ -61,14 +64,17 @@ For example :
 `0 0 * * * arkmanager backup >> /ark/log/crontab.log 2&>1`  
 *You can check [this website](http://www.unix.com/man-page/linux/5/crontab/) for more information on cron.*
 
+To add mods, you only need to change the variable ark_GameModIds in *arkmanager.cfg* with a list of your modIds (like this  `ark_GameModIds="987654321,1234568"`). If UPDATEONSTART is enable, just restart your docker or use `docker exec ark arkmanager update --update-mods`.
+
 ---
 
 ## Recommended Usage
 - First run  
  `docker run -it -p 7778:7778 -p 7778:7778/udp -p 27015:27015 -p 27015:27015/udp -p 32330:32330 -e SESSIONNAME=myserver -e ADMINPASSWORD="mypasswordadmin" -e AUTOUPDATE=120 -e AUTOBACKUP=60 -e WARNMINUTE=30 -v /my/path/to/ark:/ark --name ark turzam/ark`  
 - Wait for ark to be downloaded installed and launched, then Ctrl+C to stop the server.
-- Modify */my/path/to/ark/GameUserSetting.ini and Game.ini*
-- Add auto update every day and autobackup by editing */my/path/to/ark/crontab* with this lines : 
+- Edit */my/path/to/ark/GameUserSetting.ini and Game.ini*
+- Edit */my/path/to/ark/arkserver.cfg* to add mods and configure warning time.
+- Add auto update every day and autobackup by editing */my/path/to/ark/crontab* with this lines :  
 `0 0 * * * arkmanager update --warn --update-mods >> /ark/log/crontab.log 2&>1`  
 `0 0 * * * arkmanager backup >> /ark/log/crontab.log 2&>1`  
 - `docker start ark`
