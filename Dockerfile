@@ -1,4 +1,4 @@
-FROM debian:8
+FROM ubuntu:14.04
 
 MAINTAINER TuRzAm
 
@@ -26,7 +26,7 @@ ENV STEAMPORT 7778
 
 # Install dependencies 
 RUN apt-get update &&\ 
-    apt-get install -y curl lib32gcc1 lsof git sudo cron 
+    apt-get install -y curl lib32gcc1 lsof git
 
 # Enable passwordless sudo for users under the "sudo" group
 RUN sed -i.bkp -e \
