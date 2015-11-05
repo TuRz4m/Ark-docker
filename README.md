@@ -4,7 +4,7 @@ Docker build for managing an ARK: Survival Evolved server.
 
 This image uses [Ark Server Tools](https://github.com/FezVrasta/ark-server-tools) to manage an ark server.
 
-*If you use an old volume, delete arkmanager.cfg to get the new configuration file.*  
+*If you use an old volume, get the new arkmanager.cfg in the template directory.*  
 __Don't forget to use `docker pull turzam/ark` to get the latest version of the image__
 
 
@@ -55,10 +55,10 @@ __You can check all available command for arkmanager__ [here](https://github.com
 You can easily configure automatic update and backup.  
 If you edit the file `/my/path/to/ark/crontab` you can add your crontab job.  
 For example :  
-`# Update the server every hours`  
-`0 * * * * arkmanager update --warn --update-mods >> /ark/log/crontab.log 2&>1` 
- `# Backup the server each day at 00:00 `    
- `0 0 * * * arkmanager backup >> /ark/log/crontab.log 2&>1`  
+`# Update the server every hours  `
+`0 * * * * arkmanager update --warn --update-mods >> /ark/log/crontab.log 2&>1  `  
+`# Backup the server each day at 00:00  `  
+`0 0 * * * arkmanager backup >> /ark/log/crontab.log 2&>1`  
 *You can check [this website](http://www.unix.com/man-page/linux/5/crontab/) for more information on cron.*
 
 ---
@@ -69,8 +69,8 @@ For example :
 - Wait for ark to be downloaded installed and launched, then Ctrl+C to stop the server.
 - Modify */my/path/to/ark/GameUserSetting.ini and Game.ini*
 - Add auto update every day and autobackup by editing */my/path/to/ark/crontab* with this lines : 
-`0 0 * * * arkmanager update --warn --update-mods >> /ark/log/crontab.log 2&>1
- 0 0 * * * arkmanager backup >> /ark/log/crontab.log 2&>1 `
+`0 0 * * * arkmanager update --warn --update-mods >> /ark/log/crontab.log 2&>1`  
+`0 0 * * * arkmanager backup >> /ark/log/crontab.log 2&>1`  
 - `docker start ark`
 - Check your server with :  
  `docker exec ark arkmanager status` 
@@ -95,7 +95,7 @@ Steam server port (can't rebind with docker, it doesn't work) (default : 7778)
 + __UPDATEPONSTART__
 1 : Update the server when the container is started. 0: no update (default : 1)  
 + __TZ__
-Time Zone : Set the container timezone (for crontab). 
+Time Zone : Set the container timezone (for crontab). (You can get your timezone posix format with the command `tzselect`. For example, France is "Europe/Paris").
 
 
 --- 
@@ -105,10 +105,13 @@ Time Zone : Set the container timezone (for crontab).
     + /ark/server : Server files and data.
     + /ark/log : logs
     + /ark/backup : backups
-    + /ark/arkmanager.cfg : config file
+    + /ark/arkmanager.cfg : config file for Ark Server Tools
     + /ark/crontab : crontab config file
     + /ark/Game.ini : ark game.ini config file
     + /ark/GameUserSetting.ini : ark gameusersetting.ini config file
+    + /ark/template : Default config files
+    + /ark/template/arkmanager.cfg : default config file for Ark Server Tools
+    + /ark/template/crontab : default config file for crontab
 
 --- 
 
@@ -135,4 +138,6 @@ Time Zone : Set the container timezone (for crontab).
   - Remove variable WARNMINUTE (can now be find in arkmanager.cfg)
   - Add crontab support
   - You can now config crontab with the file /your/ark/path/crontab
+  - Add template directory with default config files.
+  - Add documentation on TZ variable.
 
