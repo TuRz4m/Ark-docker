@@ -7,16 +7,29 @@ mkfifo /tmp/FIFO
 
 export TERM=linux
 
+if [ ! -w /ark ]; then 
+	echo "[Error] Can't access ark directory. Check permissions on your mapped directory with /ark"
+	exit 1
+fi
+
+# Change working directory to /ark to allow relative path
+cd /ark
+
+# Add a template directory to store the last version of config file
+[ ! -d /ark/template ] && mkdir /ark/template
+# We overwrite the template file each time
+cp /home/steam/arkmanager.cfg /ark/template/arkmanager.cfg
+cp /home/steam/crontab /ark/template/crontab
+# Creating directory tree && symbolic link
 [ ! -f /ark/arkmanager.cfg ] && cp /home/steam/arkmanager.cfg /ark/arkmanager.cfg
 [ ! -d /ark/log ] && mkdir /ark/log
 [ ! -d /ark/backup ] && mkdir /ark/backup
+[ ! -f /ark/Game.ini ] && ln -s server/ShooterGame/Saved/Config/LinuxServer/Game.ini Game.ini
+[ ! -f /ark/GameUserSettings.ini ] && ln -s server/ShooterGame/Saved/Config/LinuxServer/GameUserSettings.ini GameUserSettings.ini
 
-#echo "Upgrade Ark server tools..."
-#arkmanager upgrade-tools
 
 
-if [ ! -d "/ark/server"  ] && [ ! -f "/ark/server/arkversion" ];then 
-	echo "Install ark..."
+if [ ! -d "/ark/server"  ] || [ ! -f "/ark/server/arkversion" ];then 
 	arkmanager install
 	# Create mod dir
 	mkdir /ark/server/ShooterGame/Content/Mods
@@ -33,24 +46,26 @@ else
 	fi
 fi
 
+# If there is uncommented line in the file
+CRONNUMBER=`grep -v "^#" /ark/crontab | wc -l`
+if [ $CRONNUMBER -gt 0 ]; then
+	echo "Loading crontab..."
+	# We load the crontab file if it exist.
+	crontab /ark/crontab
+	# Cron is attached to this process
+	sudo cron -f &
+else
+	echo "No crontab set."
+fi
+
 # Launching ark server
 arkmanager start
 
 
 # Stop server in case of signal INT or TERM
 echo "Waiting..."
-trap 'arkmanager stop' INT
+trap 'arkmanager stop;' INT
 trap 'arkmanager stop' TERM
-
-# Auto update every $AUTOUPDATE minutes
-if [ $AUTOUPDATE -gt 0 ]; then
-	while :; do sleep $(($AUTOUPDATE * 60)); echo "[`date +'%y/%m/%d %H:%M'`] [Auto-Update]"; arkmanager update --warn --update-mods --backup ; done &
-fi
-
-# Auto backup every $AUTOBACKUP minutes
-if [ $AUTOBACKUP -gt 0 ]; then
-	while :; do sleep $(($AUTOBACKUP * 60)); echo "[`date +'%Y/%m/%d %H:%M'`] [Auto-Backup]"; arkmanager backup ; done &
-fi
 
 read < /tmp/FIFO &
 wait

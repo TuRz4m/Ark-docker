@@ -17,10 +17,6 @@ ENV NBPLAYERS 70
 ENV UPDATEONSTART 1
 # if the server is backup when start with docker start
 ENV BACKUPONSTART 1
-# Nb minute between auto update (warm) (-1 : no auto update)
-ENV AUTOUPDATE -1
-# Nb minute between auto backup (-1 : no auto backup)
-ENV AUTOBACKUP -1
 #  branch on github for ark server tools
 ENV BRANCH master
 # Server PORT (you can't remap with docker, it doesn't work)
@@ -30,7 +26,7 @@ ENV STEAMPORT 7778
 
 # Install dependencies 
 RUN apt-get update &&\ 
-    apt-get install -y curl lib32gcc1 lsof git 
+    apt-get install -y curl lib32gcc1 lsof git
 
 # Enable passwordless sudo for users under the "sudo" group
 RUN sed -i.bkp -e \
@@ -48,6 +44,7 @@ RUN usermod -a -G sudo steam
 
 # Copy & rights to folders
 COPY run.sh /home/steam/run.sh
+COPY crontab /home/steam/crontab
 COPY arkmanager-user.cfg /home/steam/arkmanager.cfg
 
 RUN chmod 777 /home/steam/run.sh
@@ -61,13 +58,13 @@ WORKDIR /home/steam/ark-server-tools/tools
 RUN chmod +x install.sh 
 RUN ./install.sh steam 
 
+# Allow crontab to call arkmanager
+RUN ln -s /usr/local/bin/arkmanager /usr/bin/arkmanager
+
 # Define default config file in /ark
 COPY arkmanager-system.cfg /etc/arkmanager/arkmanager.cfg
 
-
 RUN chown steam -R /ark && chmod 755 -R /ark
-
-
 
 USER steam 
 
@@ -80,11 +77,12 @@ RUN mkdir /home/steam/steamcmd &&\
 # First run is on anonymous to download the app
 RUN /home/steam/steamcmd/steamcmd.sh +login anonymous +quit
 
-
-
 EXPOSE ${STEAMPORT} 32330 ${SERVERPORT}
 
 VOLUME  /ark 
+
+# Change the working directory to /arkd
+WORKDIR /ark
 
 # Update game launch the game.
 ENTRYPOINT ["/home/steam/run.sh"]
