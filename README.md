@@ -58,8 +58,8 @@ __You can check all available command for arkmanager__ [here](https://github.com
 You can easily configure automatic update and backup.  
 If you edit the file `/my/path/to/ark/crontab` you can add your crontab job.  
 For example :  
-`# Update the server every hours  `
-`0 * * * * arkmanager update --warn --update-mods >> /ark/log/crontab.log 2&>1  `  
+`# Update the server every hours`  
+`0 * * * * arkmanager update --warn --update-mods >> /ark/log/crontab.log 2&>1`    
 `# Backup the server each day at 00:00  `  
 `0 0 * * * arkmanager backup >> /ark/log/crontab.log 2&>1`  
 *You can check [this website](http://www.unix.com/man-page/linux/5/crontab/) for more information on cron.*
