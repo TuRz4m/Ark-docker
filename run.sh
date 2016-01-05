@@ -33,6 +33,8 @@ if [ ! -d "/ark/server"  ] || [ ! -f "/ark/server/arkversion" ];then
 	arkmanager install
 	# Create mod dir
 	mkdir /ark/server/ShooterGame/Content/Mods
+	# Download mods
+	arkmanager update --update-mods
 else
 
 	if [ ${BACKUPONSTART} -eq 1 ]; then 
