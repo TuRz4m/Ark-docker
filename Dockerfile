@@ -23,6 +23,10 @@ ENV BRANCH master
 ENV SERVERPORT 27015
 # Steam port (you can't remap with docker, it doesn't work)
 ENV STEAMPORT 7778
+# if the server should backup after stopping
+ENV BACKUPONSTOP 0
+# If the server warn the players before stopping
+ENV WARNONSTOP 0
 
 # Install dependencies 
 RUN apt-get update &&\ 
@@ -61,8 +65,11 @@ RUN ./install.sh steam
 # Allow crontab to call arkmanager
 RUN ln -s /usr/local/bin/arkmanager /usr/bin/arkmanager
 
-# Define default config file in /ark
+# Define default config file in /etc/arkmanager
 COPY arkmanager-system.cfg /etc/arkmanager/arkmanager.cfg
+
+# Define default config file in /etc/arkmanager
+COPY instance.cfg /etc/arkmanager/instances/main.cfg
 
 RUN chown steam -R /ark && chmod 755 -R /ark
 

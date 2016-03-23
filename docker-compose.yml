@@ -7,6 +7,8 @@ ark:
     ADMINPASSWORD: adminpassword
     BACKUPONSTART: 1
     UPDATEONSTART: 1
+    BACKUPONSTOP: 0
+    WARNONSTOP: 0
   volumes:
     - /my/path/to/ark:/ark
   ports:

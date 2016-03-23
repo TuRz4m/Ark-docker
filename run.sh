@@ -7,6 +7,19 @@ mkfifo /tmp/FIFO
 
 export TERM=linux
 
+function stop {
+	if [ ${BACKUPONSTOP} -eq 1 ]; then
+		echo "[Backup on stop]"
+		arkmanager backup
+	fi
+	if [ ${WARNONSTOP} -eq 1 ];then 
+	    arkmanager stop --warn
+	else
+	    arkmanager stop
+	fi
+	exit
+}
+
 if [ ! -w /ark ]; then 
 	echo "[Error] Can't access ark directory. Check permissions on your mapped directory with /ark"
 	exit 1
@@ -24,29 +37,26 @@ cp /home/steam/crontab /ark/template/crontab
 [ ! -f /ark/arkmanager.cfg ] && cp /home/steam/arkmanager.cfg /ark/arkmanager.cfg
 [ ! -d /ark/log ] && mkdir /ark/log
 [ ! -d /ark/backup ] && mkdir /ark/backup
+[ ! -d /ark/staging ] && mkdir /ark/staging
 [ ! -f /ark/Game.ini ] && ln -s server/ShooterGame/Saved/Config/LinuxServer/Game.ini Game.ini
 [ ! -f /ark/GameUserSettings.ini ] && ln -s server/ShooterGame/Saved/Config/LinuxServer/GameUserSettings.ini GameUserSettings.ini
+[ ! -f /ark/crontab ] && cp /ark/template/crontab /ark/crontab
 
 
 
 if [ ! -d "/ark/server"  ] || [ ! -f "/ark/server/arkversion" ];then 
+	mkdir /ark/server
 	arkmanager install
 	# Create mod dir
 	mkdir /ark/server/ShooterGame/Content/Mods
-	# Download mods
-	arkmanager update --update-mods
 else
 
 	if [ ${BACKUPONSTART} -eq 1 ]; then 
 		echo "[Backup]"
 		arkmanager backup
 	fi
-
-	if [ ${UPDATEONSTART} -eq 1 ]; then 
-		echo "[Update]"
-		arkmanager update --update-mods
-	fi
 fi
+
 
 # If there is uncommented line in the file
 CRONNUMBER=`grep -v "^#" /ark/crontab | wc -l`
@@ -61,13 +71,17 @@ else
 fi
 
 # Launching ark server
-arkmanager start
+if [ $UPDATEONSTART -eq 0 ]; then
+	arkmanager start -noautoupdate
+else
+	arkmanager start
+fi
 
 
 # Stop server in case of signal INT or TERM
 echo "Waiting..."
-trap 'arkmanager stop;' INT
-trap 'arkmanager stop' TERM
+trap stop INT
+trap stop TERM
 
 read < /tmp/FIFO &
 wait
