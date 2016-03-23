@@ -100,6 +100,10 @@ Steam server port (can't rebind with docker, it doesn't work) (default : 7778)
 1 : Backup the server when the container is started. 0: no backup (default : 1)
 + __UPDATEPONSTART__
 1 : Update the server when the container is started. 0: no update (default : 1)  
++ __BACKUPONSTOP__
+1 : Backup the server when the container is stopped. 0: no backup (default : 0)
++ __WARNONSTOP__
+1 : Warn the players before the container is stopped. 0: no warning (default : 0)  
 + __TZ__
 Time Zone : Set the container timezone (for crontab). (You can get your timezone posix format with the command `tzselect`. For example, France is "Europe/Paris").
 
@@ -118,6 +122,7 @@ Time Zone : Set the container timezone (for crontab). (You can get your timezone
     + /ark/template : Default config files
     + /ark/template/arkmanager.cfg : default config file for Ark Server Tools
     + /ark/template/crontab : default config file for crontab
+    + /ark/staging : default directory if you use the --downloadonly option when updating.
 
 --- 
 
@@ -146,4 +151,12 @@ Time Zone : Set the container timezone (for crontab). (You can get your timezone
   - You can now config crontab with the file /your/ark/path/crontab
   - Add template directory with default config files.
   - Add documentation on TZ variable.
++ 1.3 :
+  - Add BACKUPONSTOP to backup the server when you stop the server (thanks to *fkoester*)
+  - Add WARNONSTOP to add warning message when you stop the server (default: 60 min)
+  - Uses Ark Server Tools v1.5
+    - Compressing backups so they take up less space
+    - Downloading updates to a staging directory before applying
+    - Added support for automatically updating on restart
+    - Show a spinner when updating
 
