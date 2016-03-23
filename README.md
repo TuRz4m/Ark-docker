@@ -152,9 +152,9 @@ Time Zone : Set the container timezone (for crontab). (You can get your timezone
   - Add template directory with default config files.
   - Add documentation on TZ variable.
 + 1.3 :
-  - Add BACKUPONSTOP to backup the server when you stop the server (thanks to *fkoester*)
+  - Add BACKUPONSTOP to backup the server when you stop the server (thanks to [fkoester](https://github.com/fkoester))
   - Add WARNONSTOP to add warning message when you stop the server (default: 60 min)
-  - Uses Ark Server Tools v1.5
+  - Works with Ark Server Tools v1.5
     - Compressing backups so they take up less space
     - Downloading updates to a staging directory before applying
     - Added support for automatically updating on restart
