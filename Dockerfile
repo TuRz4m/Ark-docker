@@ -55,6 +55,10 @@ RUN mkdir  /ark
 
 # We use the git method, because api github has a limit ;)
 RUN  git clone -b $BRANCH https://github.com/FezVrasta/ark-server-tools.git /home/steam/ark-server-tools
+
+# Current ark-server-tools version is not supported yet, so checkout older one
+RUN cd /home/steam/ark-server-tools && git checkout 0cac2ab215c9c34924afac43c033167d9e95f6f9
+
 # Install 
 WORKDIR /home/steam/ark-server-tools/tools
 RUN chmod +x install.sh 
