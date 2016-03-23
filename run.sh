@@ -7,6 +7,14 @@ mkfifo /tmp/FIFO
 
 export TERM=linux
 
+function stop {
+	arkmanager stop
+	if [ ${BACKUPONSTOP} -eq 1 ]; then
+                echo "[Backup]"
+                arkmanager backup
+        fi
+}
+
 if [ ! -w /ark ]; then 
 	echo "[Error] Can't access ark directory. Check permissions on your mapped directory with /ark"
 	exit 1
@@ -66,8 +74,8 @@ arkmanager start
 
 # Stop server in case of signal INT or TERM
 echo "Waiting..."
-trap 'arkmanager stop;' INT
-trap 'arkmanager stop' TERM
+trap stop INT
+trap stop TERM
 
 read < /tmp/FIFO &
 wait

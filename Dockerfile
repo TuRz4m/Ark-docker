@@ -17,6 +17,8 @@ ENV NBPLAYERS 70
 ENV UPDATEONSTART 1
 # if the server is backup when start with docker start
 ENV BACKUPONSTART 1
+# if the server should backup after stopping
+ENV BACKUPONSTOP 0
 #  branch on github for ark server tools
 ENV BRANCH master
 # Server PORT (you can't remap with docker, it doesn't work)
