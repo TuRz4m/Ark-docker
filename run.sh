@@ -8,11 +8,11 @@ mkfifo /tmp/FIFO
 export TERM=linux
 
 function stop {
-	arkmanager stop
 	if [ ${BACKUPONSTOP} -eq 1 ]; then
-                echo "[Backup]"
+                echo "[Backup on stop]"
                 arkmanager backup
         fi
+	arkmanager stop
 }
 
 if [ ! -w /ark ]; then 
