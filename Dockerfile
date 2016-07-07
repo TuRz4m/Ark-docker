@@ -87,6 +87,8 @@ RUN mkdir /home/steam/steamcmd &&\
 RUN /home/steam/steamcmd/steamcmd.sh +login anonymous +quit
 
 EXPOSE ${STEAMPORT} 32330 ${SERVERPORT}
+# Add UDP
+EXPOSE ${STEAMPORT}/udp ${SERVERPORT}/udp
 
 VOLUME  /ark 
 
