@@ -106,6 +106,10 @@ Steam server port (can't rebind with docker, it doesn't work) (default : 7778)
 1 : Warn the players before the container is stopped. 0: no warning (default : 0)  
 + __TZ__
 Time Zone : Set the container timezone (for crontab). (You can get your timezone posix format with the command `tzselect`. For example, France is "Europe/Paris").
++ __UID__
+UID of the user used. Owner of the volume /ark
++ __GID__
+GID of the user used. Owner of the volume /ark
 
 
 --- 
@@ -159,4 +163,5 @@ Time Zone : Set the container timezone (for crontab). (You can get your timezone
     - Downloading updates to a staging directory before applying
     - Added support for automatically updating on restart
     - Show a spinner when updating
+  - Add UID & GID to set the uid & gid of the user used in the container (and permissions on the volume /ark)
 
