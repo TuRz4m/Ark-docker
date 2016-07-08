@@ -1,14 +1,16 @@
 ark:
-  image: turzam/ark
+  container_name: ark
+  image: turzam/ark:1.3-dev
   environment:
-    SESSIONNAME: Ark Docker
-    SERVERMAP: TheIsland
-    SERVERPASSWORD: 
-    ADMINPASSWORD: adminpassword
-    BACKUPONSTART: 1
-    UPDATEONSTART: 1
-    BACKUPONSTOP: 0
-    WARNONSTOP: 0
+    - SESSIONNAME=Ark Docker
+    - SERVERMAP=TheIsland
+    - SERVERPASSWORD="" 
+    - ADMINPASSWORD=adminpassword
+    - BACKUPONSTART=1
+    - UPDATEONSTART=1
+    - TZ=Europe/Paris
+    - GID=1000
+    - UID=1000
   volumes:
     - /my/path/to/ark:/ark
   ports:
