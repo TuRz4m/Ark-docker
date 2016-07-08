@@ -27,6 +27,10 @@ ENV STEAMPORT 7778
 ENV BACKUPONSTOP 0
 # If the server warn the players before stopping
 ENV WARNONSTOP 0
+# UID of the user steam
+ENV UID 1000
+# GID of the user steam
+ENV GID 1000
 
 # Install dependencies 
 RUN apt-get update &&\ 
@@ -48,10 +52,13 @@ RUN usermod -a -G sudo steam
 
 # Copy & rights to folders
 COPY run.sh /home/steam/run.sh
+COPY user.sh /home/steam/user.sh
 COPY crontab /home/steam/crontab
 COPY arkmanager-user.cfg /home/steam/arkmanager.cfg
 
+RUN touch /root/.bash_profile
 RUN chmod 777 /home/steam/run.sh
+RUN chmod 777 /home/steam/user.sh
 RUN mkdir  /ark
 
 
@@ -75,7 +82,7 @@ COPY instance.cfg /etc/arkmanager/instances/main.cfg
 
 RUN chown steam -R /ark && chmod 755 -R /ark
 
-USER steam 
+#USER steam 
 
 # download steamcmd
 RUN mkdir /home/steam/steamcmd &&\ 
@@ -96,4 +103,4 @@ VOLUME  /ark
 WORKDIR /ark
 
 # Update game launch the game.
-ENTRYPOINT ["/home/steam/run.sh"]
+ENTRYPOINT ["/home/steam/user.sh"]

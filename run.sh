@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 echo "###########################################################################"
 echo "# Ark Server - " `date`
+echo "# UID $UID - GID $GID"
 echo "###########################################################################"
 [ -p /tmp/FIFO ] && rm /tmp/FIFO
 mkfifo /tmp/FIFO
@@ -20,10 +21,7 @@ function stop {
 	exit
 }
 
-if [ ! -w /ark ]; then 
-	echo "[Error] Can't access ark directory. Check permissions on your mapped directory with /ark"
-	exit 1
-fi
+
 
 # Change working directory to /ark to allow relative path
 cd /ark
@@ -38,14 +36,14 @@ cp /home/steam/crontab /ark/template/crontab
 [ ! -d /ark/log ] && mkdir /ark/log
 [ ! -d /ark/backup ] && mkdir /ark/backup
 [ ! -d /ark/staging ] && mkdir /ark/staging
-[ ! -f /ark/Game.ini ] && ln -s server/ShooterGame/Saved/Config/LinuxServer/Game.ini Game.ini
-[ ! -f /ark/GameUserSettings.ini ] && ln -s server/ShooterGame/Saved/Config/LinuxServer/GameUserSettings.ini GameUserSettings.ini
+[ ! -L /ark/Game.ini ] && ln -s server/ShooterGame/Saved/Config/LinuxServer/Game.ini Game.ini
+[ ! -L /ark/GameUserSettings.ini ] && ln -s server/ShooterGame/Saved/Config/LinuxServer/GameUserSettings.ini GameUserSettings.ini
 [ ! -f /ark/crontab ] && cp /ark/template/crontab /ark/crontab
 
 
 
-if [ ! -d "/ark/server"  ] || [ ! -f "/ark/server/arkversion" ];then 
-	mkdir /ark/server
+if [ ! -d /ark/server  ] || [ ! -f /ark/server/arkversion ];then 
+	echo "No game files found. Installing..."
 	arkmanager install
 	# Create mod dir
 	mkdir /ark/server/ShooterGame/Content/Mods
