@@ -91,7 +91,8 @@ RUN mkdir /home/steam/steamcmd &&\
 
 
 # First run is on anonymous to download the app
-RUN /home/steam/steamcmd/steamcmd.sh +login anonymous +quit
+# We can't download from docker hub anymore -_-
+#RUN /home/steam/steamcmd/steamcmd.sh +login anonymous +quit
 
 EXPOSE ${STEAMPORT} 32330 ${SERVERPORT}
 # Add UDP
