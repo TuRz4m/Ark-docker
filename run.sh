@@ -9,7 +9,7 @@ mkfifo /tmp/FIFO
 export TERM=linux
 
 function stop {
-	if [ ${BACKUPONSTOP} -eq 1 ]; then
+	if [ ${BACKUPONSTOP} -eq 1 ] && [ "$(ls -A server/ShooterGame/Saved/SavedArks)" ]; then
 		echo "[Backup on stop]"
 		arkmanager backup
 	fi
@@ -44,12 +44,15 @@ cp /home/steam/crontab /ark/template/crontab
 
 if [ ! -d /ark/server  ] || [ ! -f /ark/server/arkversion ];then 
 	echo "No game files found. Installing..."
+	mkdir -p /ark/server/ShooterGame/Saved/SavedArks
+	mkdir -p /ark/server/ShooterGame/Content/Mods
+	mkdir -p /ark/server/ShooterGame/Binaries/Linux/
+	touch /ark/server/ShooterGame/Binaries/Linux/ShooterGameServer
 	arkmanager install
 	# Create mod dir
-	mkdir /ark/server/ShooterGame/Content/Mods
 else
 
-	if [ ${BACKUPONSTART} -eq 1 ]; then 
+	if [ ${BACKUPONSTART} -eq 1 ] && [ "$(ls -A server/ShooterGame/Saved/SavedArks/)" ]; then 
 		echo "[Backup]"
 		arkmanager backup
 	fi
