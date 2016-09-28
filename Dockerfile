@@ -18,7 +18,7 @@ ENV UPDATEONSTART 1
 # if the server is backup when start with docker start
 ENV BACKUPONSTART 1
 #  Tag on github for ark server tools
-ENV GIT_TAG 1.6-dev
+ENV GIT_TAG v1.6.02
 # Server PORT (you can't remap with docker, it doesn't work)
 ENV SERVERPORT 27015
 # Steam port (you can't remap with docker, it doesn't work)
