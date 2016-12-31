@@ -13,7 +13,7 @@ function stop {
 		echo "[Backup on stop]"
 		arkmanager backup
 	fi
-	if [ ${WARNONSTOP} -eq 1 ];then 
+	if [ ${WARNONSTOP} -eq 1 ];then
 	    arkmanager stop --warn
 	else
 	    arkmanager stop
@@ -42,7 +42,7 @@ cp /home/steam/crontab /ark/template/crontab
 
 
 
-if [ ! -d /ark/server  ] || [ ! -f /ark/server/arkversion ];then 
+if [ ! -d /ark/server  ] || [ ! -f /ark/server/arkversion ];then
 	echo "No game files found. Installing..."
 	mkdir -p /ark/server/ShooterGame/Saved/SavedArks
 	mkdir -p /ark/server/ShooterGame/Content/Mods
@@ -52,7 +52,7 @@ if [ ! -d /ark/server  ] || [ ! -f /ark/server/arkversion ];then
 	# Create mod dir
 else
 
-	if [ ${BACKUPONSTART} -eq 1 ] && [ "$(ls -A server/ShooterGame/Saved/SavedArks/)" ]; then 
+	if [ ${BACKUPONSTART} -eq 1 ] && [ "$(ls -A server/ShooterGame/Saved/SavedArks/)" ]; then
 		echo "[Backup]"
 		arkmanager backup
 	fi
@@ -63,8 +63,29 @@ fi
 CRONNUMBER=`grep -v "^#" /ark/crontab | wc -l`
 if [ $CRONNUMBER -gt 0 ]; then
 	echo "Loading crontab..."
+
+	# Generate the crontab with the necessary environment variables added.
+	(
+		cat <<EOF
+SESSIONNAME=$SESSIONNAME
+SERVERMAP=$SERVERMAP
+SERVERPASSWORD=$SERVERPASSWORD
+ADMINPASSWORD=$ADMINPASSWORD
+SERVERPORT=$SERVERPORT
+STEAMPORT=$STEAMPORT
+BACKUPONSTART=$BACKUPONSTART
+UPDATEONSTART=$UPDATEONSTART
+BACKUPONSTOP=$BACKUPONSTOP
+WARNONSTOP=$WARNONSTOP
+TZ=$TZ
+UID=$UID
+GID=$GID
+EOF
+	) > /tmp/steam.crontab
+	cat /ark/crontab >> /tmp/steam.crontab
+
 	# We load the crontab file if it exist.
-	crontab /ark/crontab
+	crontab /tmp/steam.crontab
 	# Cron is attached to this process
 	sudo cron -f &
 else
