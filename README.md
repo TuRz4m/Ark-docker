@@ -25,7 +25,7 @@ You can map the ark volume to access config files :
 Then you can edit */my/path/to/ark/arkmanager.cfg* (the values override GameUserSetting.ini) and */my/path/to/ark/[GameUserSetting.ini/Game.ini]*
 
 You can manager your server with rcon if you map the rcon port (you can rebind the rcon port with docker):  
-`docker run -d -p 7778:7778 -p 7778:7778/udp -p 27015:27015 -p 27015:27015/udp -p 32330:32330  -e SESSIONNAME=myserver --name ark turzam/ark`  
+`docker run -d -p 7778:7778 -p 7778:7778/udp -p 27015:27015 -p 27015:27015/udp -p 32330:32330  -e SESSIONNAME=myserver -e RCONPORT=27020 --name ark turzam/ark`  
 
 You can change server and steam port to allow multiple servers on same host:  
 *(You can't just rebind the port with docker. It won't work, you need to change STEAMPORT & SERVERPORT variable)*
