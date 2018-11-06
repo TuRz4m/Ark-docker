@@ -31,6 +31,10 @@ ENV WARNONSTOP 0
 ENV UID 1000
 # GID of the user steam
 ENV GID 1000
+# ClusterDir
+ENV ClusterDir "/opt/game_files/ark-cluster"
+# ClusterID
+ENV ClusterID "potato"
 
 # Install dependencies 
 RUN apt-get update &&\ 
