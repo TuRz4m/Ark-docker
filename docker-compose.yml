@@ -1,6 +1,6 @@
 ark:
   container_name: ark
-  image: turzam/ark
+  image: elusivesquatch/ark
   environment:
     - SESSIONNAME=Ark Docker
     - SERVERMAP=TheIsland
@@ -18,4 +18,4 @@ ark:
    - 7778:7778
    - 27015:27015/udp
    - 27015:27015
-   - 32330:32330
+   - 27020:27020
