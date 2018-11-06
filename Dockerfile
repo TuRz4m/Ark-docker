@@ -1,6 +1,6 @@
-FROM ubuntu:14.04
+FROM ubuntu:18.04
 
-MAINTAINER TuRzAm
+MAINTAINER ElusiveSquatch Previously: (TuRzAm)
 
 # Var for first config
 # Server Name
