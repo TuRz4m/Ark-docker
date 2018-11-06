@@ -23,6 +23,8 @@ ENV GIT_TAG v1.6.42
 ENV SERVERPORT 27015
 # Steam port (you can't remap with docker, it doesn't work)
 ENV STEAMPORT 7778
+# Rcon port (you can't remap with docker, it doesn't work)
+ENV RCONPORT 27020
 # if the server should backup after stopping
 ENV BACKUPONSTOP 0
 # If the server warn the players before stopping
