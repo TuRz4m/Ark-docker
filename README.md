@@ -96,6 +96,8 @@ Admin password of your ark server (default : "adminpassword")
 Ark server port (can't rebind with docker, it doesn't work) (default : 27015)
 + __STEAMPORT__
 Steam server port (can't rebind with docker, it doesn't work) (default : 7778)
++ __RCONPORT__
+Ark rcon port (can't rebind with docker, it doesn't work) (default : 27020)
 + __BACKUPONSTART__
 1 : Backup the server when the container is started. 0: no backup (default : 1)
 + __UPDATEPONSTART__
@@ -133,7 +135,7 @@ GID of the user used. Owner of the volume /ark
 ## Expose
 + Port : __STEAMPORT__ : Steam port (default: 7778)
 + Port : __SERVERPORT__ : server port (default: 27015)
-+ Port : __32330__ : rcon port
++ Port : __27020__ : rcon port
 
 ---
 
