@@ -4,7 +4,7 @@ ark:
   environment:
     - SESSIONNAME=Ark Docker
     - SERVERMAP=TheIsland
-    - SERVERPASSWORD="" 
+    - SERVERPASSWORD=
     - ADMINPASSWORD=adminpassword
     - BACKUPONSTART=1
     - UPDATEONSTART=1
