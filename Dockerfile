@@ -1,10 +1,10 @@
-FROM ubuntu:14.04
+FROM cm2network/steamcmd:root
 
-MAINTAINER TuRzAm
+LABEL maintainer="wollsi"
 
 # Var for first config
 # Server Name
-ENV SESSIONNAME "Ark Docker"
+ENV SESSIONNAME "ArkServer"
 # Map name
 ENV SERVERMAP "TheIsland"
 # Server password
@@ -17,12 +17,12 @@ ENV NBPLAYERS 70
 ENV UPDATEONSTART 1
 # if the server is backup when start with docker start
 ENV BACKUPONSTART 1
-#  Tag on github for ark server tools
-ENV GIT_TAG v1.5
-# Server PORT (you can't remap with docker, it doesn't work)
-ENV SERVERPORT 27015
-# Steam port (you can't remap with docker, it doesn't work)
-ENV STEAMPORT 7778
+# Query port for Steam's server browser
+ENV QUERYPORT 27015
+# Game client port
+ENV GAMEPORT 7777
+# RCON port
+ENV RCONPORT 27020
 # if the server should backup after stopping
 ENV BACKUPONSTOP 0
 # If the server warn the players before stopping
@@ -32,76 +32,62 @@ ENV UID 1000
 # GID of the user steam
 ENV GID 1000
 
-# Install dependencies 
-RUN apt-get update &&\ 
-    apt-get install -y curl lib32gcc1 lsof git
+# ------------------------ #
+# Install ark-server-tools #
+# ------------------------ #
 
-# Enable passwordless sudo for users under the "sudo" group
-RUN sed -i.bkp -e \
-	's/%sudo\s\+ALL=(ALL\(:ALL\)\?)\s\+ALL/%sudo ALL=NOPASSWD:ALL/g' /etc/sudoers \
-	/etc/sudoers
+# Install dependencies for ark-server-tools (see: https://github.com/arkmanager/ark-server-tools#prerequisites)
+RUN apt-get update && \
+	apt-get install -y \
+		perl-modules \
+		curl \
+		lsof \
+		libc6-i386 \
+		lib32gcc1 \
+		bzip2
 
-# Run commands as the steam user
-RUN adduser \ 
-	--disabled-login \ 
-	--shell /bin/bash \ 
-	--gecos "" \ 
-	steam
-# Add to sudo group
-RUN usermod -a -G sudo steam
-
-# Copy & rights to folders
-COPY run.sh /home/steam/run.sh
-COPY user.sh /home/steam/user.sh
-COPY crontab /home/steam/crontab
-COPY arkmanager-user.cfg /home/steam/arkmanager.cfg
-
-RUN touch /root/.bash_profile
-RUN chmod 777 /home/steam/run.sh
-RUN chmod 777 /home/steam/user.sh
-RUN mkdir  /ark
-
-
-# We use the git method, because api github has a limit ;)
-RUN  git clone https://github.com/FezVrasta/ark-server-tools.git /home/steam/ark-server-tools
-WORKDIR /home/steam/ark-server-tools/
-RUN  git checkout $GIT_TAG 
-# Install 
-WORKDIR /home/steam/ark-server-tools/tools
-RUN chmod +x install.sh 
-RUN ./install.sh steam 
+RUN curl -sL https://git.io/arkmanager | bash -s steam
 
 # Allow crontab to call arkmanager
 RUN ln -s /usr/local/bin/arkmanager /usr/bin/arkmanager
 
-# Define default config file in /etc/arkmanager
-COPY arkmanager-system.cfg /etc/arkmanager/arkmanager.cfg
+# ----------------- #
+# Prepare container #
+# ----------------- #
 
-# Define default config file in /etc/arkmanager
-COPY instance.cfg /etc/arkmanager/instances/main.cfg
-
+# create directories
+RUN mkdir /ark
 RUN chown steam -R /ark && chmod 755 -R /ark
 
-#USER steam 
+# Copy system config file to /etc/arkmanager
+COPY arkmanager-system.cfg /etc/arkmanager/arkmanager.cfg
 
-# download steamcmd
-RUN mkdir /home/steam/steamcmd &&\ 
-	cd /home/steam/steamcmd &&\ 
-	curl http://media.steampowered.com/installer/steamcmd_linux.tar.gz | tar -vxz 
+# Copy temporary files to /home/steam
+COPY instance.cfg /home/steam/main.cfg
+COPY arkmanager-user.cfg /home/steam/arkmanager.cfg
+COPY crontab /home/steam/crontab
 
+# Copy scripts
+COPY run.sh /home/steam/run.sh
+COPY user.sh /home/steam/user.sh
 
-# First run is on anonymous to download the app
-# We can't download from docker hub anymore -_-
-#RUN /home/steam/steamcmd/steamcmd.sh +login anonymous +quit
+# Fix rights
+RUN touch /root/.bash_profile
+RUN chmod 777 /home/steam/run.sh
+RUN chmod 777 /home/steam/user.sh
 
-EXPOSE ${STEAMPORT} 32330 ${SERVERPORT}
-# Add UDP
-EXPOSE ${STEAMPORT}/udp ${SERVERPORT}/udp
+# ------------------- #
+# Configure container #
+# ------------------- #
 
-VOLUME  /ark 
+EXPOSE ${GAMEPORT}/udp
+EXPOSE ${QUERYPORT}/udp
+# optional:
+EXPOSE ${RCONPORT}
 
-# Change the working directory to /arkd
+VOLUME /ark
+
+# Change the working directory to /ark
 WORKDIR /ark
 
-# Update game launch the game.
 ENTRYPOINT ["/home/steam/user.sh"]

@@ -1,11 +1,11 @@
-#!/bin/sh
+#!/bin/bash
 
 # Change the UID if needed
 if [ ! "$(id -u steam)" -eq "$UID" ]; then 
 	echo "Changing steam uid to $UID."
 	usermod -o -u "$UID" steam ; 
 fi
-# Change gid if needed
+# Change the GID if needed
 if [ ! "$(id -g steam)" -eq "$GID" ]; then 
 	echo "Changing steam gid to $GID."
 	groupmod -o -g "$GID" steam ; 
@@ -18,4 +18,4 @@ chown -R steam:steam /ark /home/steam
 chmod -R 777 /root/
 
 # Launch run.sh with user steam (-p allow to keep env variables)
-su -p - steam -c /home/steam/run.sh
+su -p steam -c /home/steam/run.sh
