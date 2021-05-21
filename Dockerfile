@@ -39,10 +39,10 @@ ENV BRANCH "master"
 # Timezone
 ENV TZ "asia/tokyo"
 
-RUN apt-get update &&\
-    apt-get install -y software-properties-common
+# RUN apt-get update &&\
+#     apt-get install -y software-properties-common
 	
-RUN apt-add-repository non-free
+# RUN apt-add-repository non-free
 RUN dpkg --add-architecture i386
 
 # Install dependencies 
