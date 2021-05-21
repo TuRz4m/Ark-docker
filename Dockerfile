@@ -1,4 +1,4 @@
-FROM ubuntu:14.04
+FROM ubuntu:18.04
 
 MAINTAINER kogaeta
 
@@ -38,6 +38,9 @@ ENV BRANCH "master"
 
 # Timezone
 ENV TZ "asia/tokyo"
+
+RUN apt-add-repository non-free
+RUN dpkg --add-architecture i386
 
 # Install dependencies 
 RUN apt-get update &&\ 
