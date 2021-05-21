@@ -1,6 +1,6 @@
 FROM ubuntu:14.04
 
-MAINTAINER TuRzAm
+MAINTAINER kogaeta
 
 # Var for first config
 # Server Name
@@ -23,6 +23,7 @@ ENV GIT_TAG v1.6.58
 ENV SERVERPORT 27015
 # Steam port (you can't remap with docker, it doesn't work)
 ENV STEAMPORT 7778
+ENV STEAMPORTMAIN 7777
 # if the server should backup after stopping
 ENV BACKUPONSTOP 0
 # If the server warn the players before stopping
@@ -31,6 +32,12 @@ ENV WARNONSTOP 0
 ENV UID 1000
 # GID of the user steam
 ENV GID 1000
+# Crossplay
+ENV CROSSPLAY "true"
+ENV BRANCH "master"
+
+# Timezone
+ENV TZ "asia/tokyo"
 
 # Install dependencies 
 RUN apt-get update &&\ 
@@ -94,9 +101,9 @@ RUN mkdir /home/steam/steamcmd &&\
 # We can't download from docker hub anymore -_-
 #RUN /home/steam/steamcmd/steamcmd.sh +login anonymous +quit
 
-EXPOSE ${STEAMPORT} 32330 ${SERVERPORT}
+EXPOSE ${STEAMPORT} 32330 ${SERVERPORT} ${STEAMPORTMAIN}
 # Add UDP
-EXPOSE ${STEAMPORT}/udp ${SERVERPORT}/udp
+EXPOSE ${STEAMPORT}/udp ${SERVERPORT}/udp ${STEAMPORTMAIN}/udp
 
 VOLUME  /ark 
 
