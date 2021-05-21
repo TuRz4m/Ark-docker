@@ -41,7 +41,7 @@ ENV TZ "asia/tokyo"
 
 # Install dependencies 
 RUN apt-get update &&\ 
-    apt-get install -y curl lib32gcc1 lsof git
+    apt-get install -y curl lib32gcc1 lsof git perl-modules libc6-i386 bzip2 nano findutils perl
 
 # Enable passwordless sudo for users under the "sudo" group
 RUN sed -i.bkp -e \
